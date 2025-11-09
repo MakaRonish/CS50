@@ -1,1 +1,1 @@
-printf(5%10);
+50 < firstTwo < 56
