@@ -1,0 +1,1 @@
+printf("%c", input[i] - 32);
