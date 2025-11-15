@@ -1,32 +1,57 @@
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 int main(void)
 {
-    char sentence[999];
-    double letter = 0, word = 1, sen = 0;
-    printf("Text: ");
-    fgets(sentence, sizeof(sentence), stdin);
-    for (int i = 0; i < strlen(sentence); i++)
+    char *sentence[] = {
+        "One fish. Two fish. Red fish. Blue fish.",
+        "Would you like them here or there? I would not like them here or there. I would not like them anywhere.",
+        "Congratulations! Today is your day. You're off to Great Places! You're off and away!",
+        "Harry Potter was a highly unusual boy in many ways. For one thing, he hated the summer holidays more than any other time of year. For another, he really wanted to do his homework, but was forced to do it in secret, in the dead of the night. And he also happened to be a wizard.",
+        "In my younger and more vulnerable years my father gave me some advice that I've been turning over in my mind ever since.",
+        "Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do: once or twice she had peeped into the book her sister was reading, but it had no pictures or conversations in it, \"and what is the use of a book,\" thought Alice \"without pictures or conversation?\"",
+        "When he was nearly thirteen, my brother Jem got his arm badly broken at the elbow. When it healed, and Jem's fears of never being able to play football were assuaged, he was seldom self-conscious about his injury. His left arm was somewhat shorter than his right; when he stood or walked, the back of his hand was at right angles to his body, his thumb parallel to his thigh.",
+        "There are more things in Heaven and Earth, Horatio, than are dreamt of in your philosophy.",
+        "It was a bright cold day in April, and the clocks were striking thirteen. Winston Smith, his chin nuzzled into his breast in an effort to escape the vile wind, slipped quickly through the glass doors of Victory Mansions, though not quickly enough to prevent a swirl of gritty dust from entering along with him.",
+        "A large class of computational problems involve the determination of properties of graphs, digraphs, integers, arrays of integers, finite families of finite sets, boolean formulas and elements of other countable domains.",
+    };
+    for (int j = 0; j < 10; j++)
     {
-        char s = sentence[i];
-        if (sentence[i] == ' ')
+
+        double letter = 0, word = 1, sen = 0;
+
+        for (int i = 0; i < strlen(sentence[j]); i++)
         {
-            word++;
+
+            if (sentence[j][i] == ' ')
+            {
+                word++;
+            }
+            else if ((sentence[j][i] >= 'A' && sentence[j][i] <= 'Z') || (sentence[j][i] >= 'a' && sentence[j][i] <= 'z'))
+            {
+                letter++;
+            }
+            else if (sentence[j][i] == '.' || sentence[j][i] == '!' || sentence[j][i] == '?')
+            {
+                sen++;
+            }
         }
-        else if ((sentence[i] >= 'A' && sentence[i] <= 'Z') || (sentence[i] >= 'a' && sentence[i] <= 'z'))
+
+        double index = 0.0588 * ((letter / word) * 100) - 0.296 * ((sen / word) * 100) - 15.8;
+
+        int ind = round(index);
+        if (ind > 1 && ind <= 16)
         {
-            letter++;
+            printf("Grade %i\n", ind);
         }
-        else if (sentence[i] == '.' || sentence[i] == '!' || sentence[i] == '?')
+        else if (ind <= 1)
         {
-            sen++;
+            printf("Grade 1\n");
+        }
+        else
+        {
+            printf("Grade 16+\n");
         }
     }
-    printf("text: %s", sentence);
-    printf("word :%f\n", word);
-    printf("sen :%f\n", sen);
-    printf("letter :%f\n", letter);
-    double index = 0.0588 * ((letter / word) * 100) - 0.296 * ((sen / word) * 100) - 15.8;
-    printf("%f\n", index);
 }
