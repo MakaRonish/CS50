@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 int main(void)
 {
@@ -18,7 +19,31 @@ int main(void)
         {
 
             int asci_val = word[i];
-            encrypted[i] = asci_val + key;
+            int new_val = asci_val + key;
+            if (isupper(word[i]))
+            {
+                if (new_val > 90)
+                {
+                    int new_key = new_val - 90;
+                    encrypted[i] = asci_val + new_key;
+                }
+                else
+                {
+                    encrypted[i] = asci_val + key;
+                }
+            }
+            else if (islower(word[i]))
+            {
+                if (new_val > 122)
+                {
+                    int new_key = new_val - 122;
+                    encrypted[i] = asci_val + new_key;
+                }
+                else
+                {
+                    encrypted[i] = asci_val + key;
+                }
+            }
         }
     }
     printf("output: %s", encrypted);
