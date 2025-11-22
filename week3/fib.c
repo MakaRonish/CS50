@@ -18,4 +18,5 @@ int fibo(int num)
 
 int main(void)
 {
+    fibo(10);
 }
