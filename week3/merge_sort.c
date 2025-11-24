@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+void merge_sort(int a[], int b[], int len_a, int len_b, int mainA[]);
 void merge(int numbers[], int len)
 {
     printf("Array: ");
@@ -36,6 +36,48 @@ void merge(int numbers[], int len)
 
     merge(left, first_half);
     merge(right, second_half);
+    merge_sort(left, right, first_half, second_half, numbers);
+}
+
+void merge_sort(int a[], int b[], int len_a, int len_b, int mainA[])
+{
+    int fix_array[len_a + len_b];
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    while (i < len_a && j < len_b)
+    {
+        if (a[i] < b[j])
+        {
+            fix_array[k] = a[i];
+            k++;
+            i++;
+        }
+        else if (a[i] > b[j])
+        {
+            fix_array[k] = b[j];
+            k++;
+            j++;
+        }
+    }
+    while (i < len_a)
+    {
+        fix_array[k] = a[i];
+        i++;
+        k++;
+    }
+    while (j < len_b)
+    {
+        fix_array[k] = b[j];
+        j++;
+        k++;
+    }
+    printf("Merged array \n");
+    for (int z = 0; z < len_a + len_b; z++)
+    {
+        mainA[z] = fix_array[z];
+    }
+    printf("\n");
 }
 
 int main(void)
