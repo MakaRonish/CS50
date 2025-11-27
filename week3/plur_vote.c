@@ -34,7 +34,7 @@ int main(void)
             scanf("%s", voted_person);
             for (int i = 0; i < count; i++)
             {
-                if (strcmp((people[i].name), (voted_person)) == 0)
+                if (strcmp(people[i].name, voted_person) == 0)
                 {
                     found = 0;
                     printf("vote casted\n");
