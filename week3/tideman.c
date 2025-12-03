@@ -14,6 +14,11 @@ struct Votes
     char second[100];
     char third[100];
 };
+struct Score
+{
+    char name[100];
+    int vote;
+};
 void print_candidates(struct Candidates candidate[], int count)
 {
     printf("\n--- Candidates ---\n");
@@ -50,16 +55,59 @@ int name_exist(struct Candidates candidate[], int count, char name[])
     }
     return -1;
 }
+struct Score find_score(struct Candidates candidate[], struct Votes votes[], int count, int no_voters, char name1[], char name2[])
+{
+    struct Candidates copy_candidate[10];
+    memcpy(copy_candidate, candidate, count * sizeof(struct Candidates));
+    int name1_ind = name_exist(copy_candidate, count, name1);
+    int name2_ind = name_exist(copy_candidate, count, name2);
+    for (int i = 0; i < no_voters; i++)
+    {
+        char found_name[100];
+        strcpy(found_name, votes[i].first);
+        if (strcmp(found_name, name1) == 0 || strcmp(found_name, name2) == 0)
+        {
+        }
+        else
+        {
+            char sec_choice_found[100];
+            strcpy(sec_choice_found, votes[i].second);
+            int index_sec = name_exist(copy_candidate, count, sec_choice_found);
+            copy_candidate[index_sec].first_choice++;
+        }
+    }
+
+    printf("candidate %s total votes: %d\n", name1, copy_candidate[name1_ind].first_choice);
+    printf("candidate %s total votes: %d\n", name2, copy_candidate[name2_ind].first_choice);
+    int c1 = copy_candidate[name1_ind].first_choice;
+    int c2 = copy_candidate[name2_ind].first_choice;
+    print_candidates(copy_candidate, count);
+    struct Score score;
+    if (c1 > c2)
+    {
+
+        strcpy(score.name, name1);
+        score.vote = c1;
+    }
+    else
+    {
+        strcpy(score.name, name1);
+        score.vote = c1;
+    }
+    return score;
+}
 
 int main(void)
 {
     struct Candidates candidate[10];
     struct Votes votes[10];
+    char candi[10][100];
 
     int count = 0;
     printf("Candidates: ");
     while (scanf("%s", &candidate[count].name) == 1)
     {
+        strcpy(candi[count], candidate[count].name);
         candidate[count].first_choice = 0;
         candidate[count].second_choice = 0;
         candidate[count].third_choice = 0;
@@ -116,4 +164,20 @@ int main(void)
     }
     print_candidates(candidate, count);
     print_votes(votes, no_voters);
+    struct Score result[10];
+    int unique_count = 0;
+    for (int i = 0; i < count; i++)
+    {
+        for (int j = i + 1; j < count; j++)
+        {
+            unique_count++;
+            result[i] = find_score(candidate, votes, count, no_voters, candi[i], candi[j]);
+        }
+    }
+    printf("No of comb: %d", unique_count);
+    for (int i = 0; i < unique_count; i++)
+    {
+        printf("Results\n");
+        printf("vote won by %s\nvotes total: %d", result[i].name, result[i].vote);
+    }
 }
