@@ -18,6 +18,7 @@ struct Score
 {
     char name[100];
     int vote;
+    char won_against[100];
 };
 void print_candidates(struct Candidates candidate[], int count)
 {
@@ -87,12 +88,14 @@ struct Score find_score(struct Candidates candidate[], struct Votes votes[], int
     {
 
         strcpy(score.name, name1);
+        strcpy(score.won_against, name2);
         score.vote = c1;
     }
     else
     {
-        strcpy(score.name, name1);
-        score.vote = c1;
+        strcpy(score.name, name2);
+        strcpy(score.won_against, name1);
+        score.vote = c2;
     }
     return score;
 }
@@ -170,14 +173,35 @@ int main(void)
     {
         for (int j = i + 1; j < count; j++)
         {
+            result[unique_count] = find_score(candidate, votes, count, no_voters, candi[i], candi[j]);
             unique_count++;
-            result[i] = find_score(candidate, votes, count, no_voters, candi[i], candi[j]);
         }
     }
     printf("No of comb: %d", unique_count);
     for (int i = 0; i < unique_count; i++)
     {
         printf("Results\n");
-        printf("vote won by %s\nvotes total: %d", result[i].name, result[i].vote);
+        printf("vote won by %s against %s\nvotes total: %d\n ", result[i].name, result[i].won_against, result[i].vote);
+    }
+    struct Score arrange_result[10];
+    memcpy(arrange_result, result, unique_count * sizeof(struct Score));
+    for (int i = 0; i < unique_count - 1; i++)
+    {
+        for (int j = 0; j < unique_count - i - 1; j++)
+        {
+            if (arrange_result[j].vote < arrange_result[j + 1].vote)
+            {
+
+                struct Score temp = arrange_result[j];
+                arrange_result[j] = arrange_result[j + 1];
+                arrange_result[j + 1] = temp;
+            }
+        }
+    }
+
+    for (int i = 0; i < unique_count; i++)
+    {
+        printf("Results Sorted\n");
+        printf("vote won by %s against %s\nvotes total: %d\n ", arrange_result[i].name, arrange_result[i].won_against, arrange_result[i].vote);
     }
 }
