@@ -202,6 +202,7 @@ int main(void)
     for (int i = 0; i < unique_count; i++)
     {
         printf("Results Sorted answer\n");
+        printf("Results Sorted answer\n");
         printf("votes %s against %s\nvotes total number: %d\n ", arrange_result[i].name, arrange_result[i].won_against, arrange_result[i].vote);
     }
 }
